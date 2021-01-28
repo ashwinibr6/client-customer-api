@@ -16,7 +16,7 @@ public class CustomerResponse {
     }
 
     public CustomerResponse() {
-        
+
     }
 
     public int getStatusCode() {

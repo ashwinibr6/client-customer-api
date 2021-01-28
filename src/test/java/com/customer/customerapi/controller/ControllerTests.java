@@ -20,8 +20,7 @@ import java.util.List;
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -66,7 +65,7 @@ public class ControllerTests {
 
     @Test
     public void getCustomerById() throws Exception {
-        String id = "41acbb7a-ebc8-40b7-8281-70635e3466b8";
+        String id = "41acbb7a-ebc8-40b7-8281-70635e3466b4";
 
         Customer customer = TestUtils.getCustomerByIdMock(id);
 
@@ -77,5 +76,13 @@ public class ControllerTests {
                 .andExpect(content().string(containsString(customer.getLastName())))
                 .andExpect(content().string(containsString(customer.getAddress())))
                 .andExpect(content().string(containsString(customer.getPhoneNumber())));
+    }
+
+    @Test
+    public void deleteCustomerById() throws Exception {
+        String id = "41acbb7a-ebc8-40b7-8281-70635e3466b8";
+
+        mockMvc.perform(delete("/api/customers/" + id))
+                .andExpect(status().isNoContent());
     }
 }

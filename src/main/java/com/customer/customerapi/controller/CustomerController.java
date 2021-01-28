@@ -29,7 +29,6 @@ public class CustomerController {
         List<Customer> customers = mapper.readValue(customersFile, new TypeReference<ArrayList<Customer>>() {
         });
 
-
         CustomerResponse customerResponse = new CustomerResponse(customers, HttpStatus.OK, 20);
         return new ResponseEntity<>(customerResponse, HttpStatus.OK);
     }
@@ -49,7 +48,6 @@ public class CustomerController {
         List<Customer> customerCreated = Collections.singletonList(customer);
         CustomerResponse customerResponse = new CustomerResponse(customerCreated, HttpStatus.OK, 20);
 
-
         return new ResponseEntity<>(customerResponse, HttpStatus.CREATED);
     }
 
@@ -63,5 +61,20 @@ public class CustomerController {
         List<Customer> foundedCustomer = customers.stream().filter(customer -> customer.getId().equals(id)).collect(Collectors.toList());
         CustomerResponse customerResponse = new CustomerResponse(foundedCustomer, HttpStatus.OK, 20);
         return new ResponseEntity<>(customerResponse, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/customers/{id}")
+    public ResponseEntity deleteCustomerById(@PathVariable String id) throws IOException {
+        mapper = new ObjectMapper();
+        File customersFile = new File(customersJsonPath);
+        List<Customer> customers = mapper.readValue(customersFile, new TypeReference<ArrayList<Customer>>() {
+        });
+        Customer customer = customers.stream().filter(c -> c.getId().equals(id)).findFirst().get();
+        customers.remove(customer);
+
+        File resultFileCustomers = new File(customersJsonPath);
+        mapper.writeValue(resultFileCustomers, customers);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
