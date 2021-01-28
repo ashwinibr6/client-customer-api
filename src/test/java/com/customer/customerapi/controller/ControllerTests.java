@@ -1,8 +1,6 @@
 package com.customer.customerapi.controller;
 
 import com.customer.customerapi.model.Customer;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,14 +10,14 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import utils.TestUtils;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -45,16 +43,34 @@ public class ControllerTests {
         String actual = mvcResult.getResponse().getContentAsString();
 
         assertEquals(customersAsString, actual);
-        //      mockMvc.perform(get("/api/customers"))
-//            .andExpect(status().isOk())
-//            .andExpect(content().string(containsString(customerList.get(0).getFirstName())))
-//            .andExpect(content().string(containsString(customerList.get(0).getId())))
-//            .andExpect(content().string(containsString(customerList.get(0).getLastName())))
-//            .andExpect(content().string(containsString(customerList.get(0).getAddress())))
-//            .andExpect(content().string(containsString(customerList.get(0).getPhoneNumber())));
     }
 
+    @Test
+    public void createCustomer() throws Exception {
+        String requestJson = TestUtils.createJsonAsCustomer();
+        mockMvc.perform(post("/api/customers")
+                .contentType(APPLICATION_JSON_UTF8)
+                .content(requestJson))
+                .andExpect(status().isCreated())
+                .andExpect(content().string(containsString(customerList.get(customerList.size() - 1).getFirstName())))
+                .andExpect(content().string(containsString(customerList.get(customerList.size() - 1).getId())))
+                .andExpect(content().string(containsString(customerList.get(customerList.size() - 1).getLastName())))
+                .andExpect(content().string(containsString(customerList.get(customerList.size() - 1).getAddress())))
+                .andExpect(content().string(containsString(customerList.get(customerList.size() - 1).getPhoneNumber())));
+    }
 
+    @Test
+    public void getCustomerById() throws Exception {
+        String id = "41acbb7a-ebc8-40b7-8281-70635e3466b8";
 
+        Customer customer = TestUtils.getCustomerByIdMock(id);
 
+        mockMvc.perform(get("/api/customers/" + id))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString(customer.getFirstName())))
+                .andExpect(content().string(containsString(customer.getId())))
+                .andExpect(content().string(containsString(customer.getLastName())))
+                .andExpect(content().string(containsString(customer.getAddress())))
+                .andExpect(content().string(containsString(customer.getPhoneNumber())));
+    }
 }
