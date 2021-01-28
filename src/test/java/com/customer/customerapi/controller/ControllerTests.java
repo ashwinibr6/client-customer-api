@@ -1,6 +1,10 @@
 package com.customer.customerapi.controller;
 
 import com.customer.customerapi.model.Customer;
+import com.customer.customerapi.model.CustomerResponse;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import jdk.internal.org.objectweb.asm.TypeReference;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,10 +43,11 @@ public class ControllerTests {
     @Test
     public void getCustomers() throws Exception {
         MvcResult mvcResult = mockMvc.perform(get("/api/customers")).andExpect(status().isOk()).andReturn();
+        ObjectMapper mapper = new ObjectMapper();
 
-        String actual = mvcResult.getResponse().getContentAsString();
+        CustomerResponse customerResponse = mapper.readValue(mvcResult.getResponse().getContentAsString(), CustomerResponse.class);
 
-        assertEquals(customersAsString, actual);
+        assertEquals(customerList, customerResponse.getData());
     }
 
     @Test
