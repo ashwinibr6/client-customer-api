@@ -1,0 +1,44 @@
+[
+  {
+    "id": "41acbb7a-ebc8-40b7-8281-70635e3466b8",
+    "firstName": "Salvator",
+    "lastName": "Di'Mario",
+    "phoneNumber": "510-555-7863",
+    "address": "45 Carver Ave, Midland, TX 70134"
+  },
+  {
+    "id": "b8a504e8-7cbd-4a54-9a24-dc1832558162",
+    "firstName": "Qin",
+    "lastName": "Zhang",
+    "phoneNumber": "510-555-2367",
+    "address": "1 Main Street, Topeka, KS 37891"
+  },
+  {
+    "id": "a454f817-3534-43c4-9ceb-f285330693aa",
+    "firstName": "Hanaan",
+    "lastName": "Altalib",
+    "phoneNumber": "204-555-9753",
+    "address": "1826 Truth Place, New York, NY, 20127"
+  },
+  {
+    "id": "812e2132-cffa-4bb6-8d17-b13c16b2c9b3",
+    "firstName": "Isabella",
+    "lastName": "Baumfree",
+    "phoneNumber": "309-555-1892",
+    "address": "1826 Truth Place, New York, NY 20127"
+  },
+  {
+    "id": "41acbb7a-ebc8-40b7-8281-70635e3466b4",
+    "firstName": "Araminta",
+    "lastName": "Ross",
+    "phoneNumber": "309-555-1370",
+    "address": "1849 Harriet Ave, Auburn, NY 63102"
+  },
+  {
+    "id": "41acbb7a-ebc8-40b7-8281-70635e3466b4",
+    "firstName": "Araminta",
+    "lastName": "Ross",
+    "phoneNumber": "309-555-1370",
+    "address": "1849 Harriet Ave, Auburn, NY 63102"
+  }
+]
