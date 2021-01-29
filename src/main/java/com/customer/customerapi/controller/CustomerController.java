@@ -2,6 +2,7 @@ package com.customer.customerapi.controller;
 
 import com.customer.customerapi.model.Customer;
 import com.customer.customerapi.model.CustomerResponse;
+import com.customer.customerapi.service.CustomerService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,33 +22,27 @@ import java.util.stream.Collectors;
 public class CustomerController {
 
     ObjectMapper mapper;
-    String customersJsonPath = "src/test/data/customers.json"; // 4 customer
+    String customersJsonPath = "src/test/data/customers.json";
+
+    private CustomerService customerService;
+
+    public CustomerController(CustomerService customerService) {
+        this.customerService = customerService;
+    }
 
     @GetMapping("/customers")
-    public ResponseEntity<CustomerResponse> getCustomers() throws IOException {
-        mapper = new ObjectMapper();
-        File customersFile = new File(customersJsonPath);
-        List<Customer> customers = mapper.readValue(customersFile, new TypeReference<ArrayList<Customer>>() {
-        });
-
-        CustomerResponse customerResponse = new CustomerResponse(customers, HttpStatus.OK, 20);
+    public ResponseEntity<CustomerResponse> getCustomers() {
+        List<Customer> customersList = customerService.getCustomers();
+        CustomerResponse customerResponse = new CustomerResponse(customersList, HttpStatus.OK, 20);
         return new ResponseEntity<>(customerResponse, HttpStatus.OK);
     }
 
     @PostMapping("/customers")
-    public ResponseEntity<CustomerResponse> createCustomer(@RequestBody Customer customer) throws IOException {
-        mapper = new ObjectMapper();
-        File customersFile = new File(customersJsonPath);
-        List<Customer> customerList = mapper.readValue(customersFile, new TypeReference<ArrayList<Customer>>() {
-        });
-
-        customerList.add(customer);
-
-        File resultFileCustomers = new File(customersJsonPath);
-        mapper.writeValue(resultFileCustomers, customerList);
-
-        List<Customer> customerCreated = Collections.singletonList(customer);
-        CustomerResponse customerResponse = new CustomerResponse(customerCreated, HttpStatus.OK, 20);
+    public ResponseEntity<CustomerResponse> createCustomer(@RequestBody Customer customer) {
+        //List<Customer> customerCreated = Collections.singletonList(customer);
+        Customer customerAdded = customerService.createCustomer(customer);
+        List<Customer> listCustomer = Collections.singletonList(customerAdded);
+        CustomerResponse customerResponse = new CustomerResponse(listCustomer, HttpStatus.OK, 201);
 
         return new ResponseEntity<>(customerResponse, HttpStatus.CREATED);
     }

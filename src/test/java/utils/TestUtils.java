@@ -1,49 +1,28 @@
 package utils;
 
 import com.customer.customerapi.model.Customer;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 public class TestUtils {
 
-    static ObjectMapper mapper;
-    static ArrayList<Customer> customerList;
-
-    static String customersJsonPath = "src/test/data/customers.json"; // 4 customers
-    static String customerJsonPath = "src/test/data/existingCustomer.json"; // 1 customer
-    static String newCustomerJsonPath = "src/test/data/newCustomer.json"; // 1 customer
-
     // TEST UTILITIES ----------------------------------------------------
-    public static List<Customer> initializeCustomersData() throws IOException {
-        mapper = new ObjectMapper();
-        File customersFile = new File(customersJsonPath);
-        return mapper.readValue(customersFile, new TypeReference<ArrayList<Customer>>() {
-        });
+    public static List<Customer> initializeCustomersData() {
+        Customer customer1 = new Customer(1L, "Qin", "Zhang", "510-555-2367", "1 Main Street, Topeka, KS 37891");
+        Customer customer2 = new Customer(2L,"Hanaan", "Altalib", "204-555-9753", "1826 Truth Place, New York, NY, 20127");
+        Customer customer3 = new Customer(3L, "Isabella", "Baumfree", "309-555-1892", "1826 Truth Place, New York, NY 20127");
+
+        List<Customer> customerList = Arrays.asList(customer1, customer2, customer3);
+
+        return customerList;
     }
 
-    public static String createJsonAsCustomer() throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        File customerFile = new File(newCustomerJsonPath);
-        Customer customer = mapper.readValue(customerFile, Customer.class);
-        ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
-        return ow.writeValueAsString(customer);
+    public static Customer customerToBeCreated() {
+        return new Customer(1L, "Araminta", "Ross", "309-555-1370", "1849 Harriet Ave, Auburn, NY 63102");
     }
 
-    public static String getAllCustomersAsString() throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        File customerFile = new File(customersJsonPath);
-        List<Customer> customer = mapper.readValue(customerFile, new TypeReference<ArrayList<Customer>>() {
-        });
-        return mapper.writeValueAsString(customer);
-    }
-
-    public static Customer getCustomerByIdMock(String id) throws IOException {
+    public static Customer getCustomerByIdMock(String id) {
         return initializeCustomersData().stream().filter(customer -> customer.getId().equals(id)).findFirst().get();
     }
 }
