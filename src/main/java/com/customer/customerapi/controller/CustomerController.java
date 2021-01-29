@@ -53,17 +53,14 @@ public class CustomerController {
     }
 
     @DeleteMapping("/customers/{id}")
-    public ResponseEntity deleteCustomerById(@PathVariable String id) throws IOException {
-        mapper = new ObjectMapper();
-        File customersFile = new File(customersJsonPath);
-        List<Customer> customers = mapper.readValue(customersFile, new TypeReference<ArrayList<Customer>>() {
-        });
-        Customer customer = customers.stream().filter(c -> c.getId().equals(id)).findFirst().get();
-        customers.remove(customer);
-
-        File resultFileCustomers = new File(customersJsonPath);
-        mapper.writeValue(resultFileCustomers, customers);
-
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteCustomerById(@PathVariable Long id)  {
+        customerService.deleteCustomerById(id);
     }
+
+//    @PutMapping("/customers/{id}")
+//    public ResponseEntity<CustomerResponse> updateCustomerById(@RequestBody Customer customer) {
+//        CustomerResponse customerResponse = new CustomerResponse(new ArrayList<>(), HttpStatus.OK, 200);
+//        return new ResponseEntity<>(customerResponse, HttpStatus.OK);
+//    }
 }

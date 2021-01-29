@@ -8,7 +8,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import org.springframework.transaction.annotation.Transactional;
 import utils.TestUtils;
 
 import java.util.List;
@@ -53,4 +52,22 @@ public class ServiceTests {
         verify(customerRepository, times(1)).findById(any());
         assertEquals(Optional.ofNullable(TestUtils.initializeCustomersData().get(0)),customerFounded);
     }
+
+    @Test
+    public void deleteCustomerById() {
+        customerService.deleteCustomerById(1L);
+        verify(customerRepository, times(1)).deleteById(any());
+    }
+
+//    @Test
+//    public void updateCustomerById() {
+//        Customer c = TestUtils.initializeCustomersData().get(0);
+//        c.setFirstName("CHANGED");
+//        when(customerRepository.save(any())).thenReturn(Optional.of(c).get());
+//
+//        Customer updated = customerService.updatedById(c);
+//
+//        verify(customerRepository, times(1)).save(any());
+//        assertEquals(c,updated);
+//    }
 }

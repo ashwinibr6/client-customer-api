@@ -3,7 +3,6 @@ package utils;
 import com.customer.customerapi.model.Customer;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 public class TestUtils {
 
@@ -22,7 +21,7 @@ public class TestUtils {
         return new Customer(1L, "Araminta", "Ross", "309-555-1370", "1849 Harriet Ave, Auburn, NY 63102");
     }
 
-    public static Customer getCustomerByIdMock(String id) {
-        return initializeCustomersData().stream().filter(customer -> customer.getId().equals(id)).findFirst().get();
-    }
+//    public static Customer getCustomerByIdMock(String id) {
+//        return initializeCustomersData().stream().filter(customer -> customer.getId().equals(id)).findFirst().get();
+//    }
 }

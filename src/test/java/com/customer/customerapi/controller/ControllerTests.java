@@ -3,29 +3,20 @@ package com.customer.customerapi.controller;
 import com.customer.customerapi.model.Customer;
 import com.customer.customerapi.model.CustomerResponse;
 import com.customer.customerapi.repository.CustomerRepository;
-import com.customer.customerapi.service.CustomerService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-import jdk.internal.org.objectweb.asm.TypeReference;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import utils.TestUtils;
 
 import java.util.List;
-import java.util.Optional;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -90,11 +81,32 @@ public class ControllerTests {
                 .andExpect(content().string(containsString(c.getPhoneNumber())));
     }
 
+    @Test
+    public void deleteCustomerById() throws Exception {
+        Customer c = customerRepository.save(TestUtils.initializeCustomersData().get(0));
+
+        mockMvc.perform(delete("/api/customers/" + c.getId()))
+                .andExpect(status().isNoContent());
+    }
+
 //    @Test
-//    public void deleteCustomerById() throws Exception {
-//        String id = "41acbb7a-ebc8-40b7-8281-70635e3466b8";
+//    public void updateCustomerById() throws Exception {
+//        Customer c = customerRepository.save(TestUtils.initializeCustomersData().get(0));
 //
-//        mockMvc.perform(delete("/api/customers/" + id))
-//                .andExpect(status().isNoContent());
+//        String requestJson = mapper.writeValueAsString(c);
+//
+//        mockMvc.perform(post("/api/customers")
+//                .contentType(APPLICATION_JSON_UTF8)
+//                .content(requestJson))
+//                .andExpect(status().isCreated());
+//
+//        c.setFirstName("CHANGED");
+//
+//        MvcResult mvcResult = mockMvc.perform(put("/api/customers/" + c))
+//                .andExpect(status().isOk()).andReturn();
+//
+//        CustomerResponse customerResponse = mapper.readValue(mvcResult.getResponse().getContentAsString(), CustomerResponse.class);
+//
+//        assertEquals(c, customerResponse.getData().get(0));
 //    }
 }

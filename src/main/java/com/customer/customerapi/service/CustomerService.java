@@ -25,4 +25,12 @@ public class CustomerService {
     public Optional<Customer> getCustomerById(Long id) {
         return customerRepository.findById(id);
     }
+
+    public void deleteCustomerById(long id) {
+        customerRepository.deleteById(id);
+    }
+
+//    public Customer updatedById(Customer customer) {
+//        return customerRepository.save(customer);
+//    }
 }
