@@ -11,10 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -48,14 +45,10 @@ public class CustomerController {
     }
 
     @GetMapping("/customers/{id}")
-    public ResponseEntity<CustomerResponse> getCustomerById(@PathVariable String id) throws IOException {
-        mapper = new ObjectMapper();
-        File customersFile = new File(customersJsonPath);
-        List<Customer> customers = mapper.readValue(customersFile, new TypeReference<ArrayList<Customer>>() {
-        });
-
-        List<Customer> foundedCustomer = customers.stream().filter(customer -> customer.getId().equals(id)).collect(Collectors.toList());
-        CustomerResponse customerResponse = new CustomerResponse(foundedCustomer, HttpStatus.OK, 20);
+    public ResponseEntity<CustomerResponse> getCustomerById(@PathVariable Long id) {
+        Optional<Customer> optionalCustomer = customerService.getCustomerById(id);
+        List<Customer> customerList = Arrays.asList(optionalCustomer.get());
+        CustomerResponse customerResponse = new CustomerResponse(customerList, HttpStatus.OK, 200);
         return new ResponseEntity<>(customerResponse, HttpStatus.OK);
     }
 

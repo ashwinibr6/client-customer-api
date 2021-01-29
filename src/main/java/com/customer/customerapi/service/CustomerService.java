@@ -4,7 +4,6 @@ import com.customer.customerapi.model.Customer;
 import com.customer.customerapi.repository.CustomerRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,5 +20,9 @@ public class CustomerService {
 
     public Customer createCustomer(Customer customer) {
          return customerRepository.save(customer);
+    }
+
+    public Optional<Customer> getCustomerById(Long id) {
+        return customerRepository.findById(id);
     }
 }

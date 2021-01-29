@@ -44,4 +44,13 @@ public class ServiceTests {
 
         assertEquals(TestUtils.customerToBeCreated(), customer);
     }
+
+    @Test
+    public void getCustomerById() {
+        when(customerRepository.findById(any())).thenReturn(Optional.ofNullable(TestUtils.initializeCustomersData().get(0)));
+        Optional<Customer> customerFounded = customerService.getCustomerById(1L);
+
+        verify(customerRepository, times(1)).findById(any());
+        assertEquals(Optional.ofNullable(TestUtils.initializeCustomersData().get(0)),customerFounded);
+    }
 }

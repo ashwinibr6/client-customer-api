@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
@@ -75,22 +76,20 @@ public class ControllerTests {
 
         assertEquals(TestUtils.customerToBeCreated(), customerResponse.getData().get(0));
     }
-//
-//    @Test
-//    public void getCustomerById() throws Exception {
-//        String id = "41acbb7a-ebc8-40b7-8281-70635e3466b4";
-//
-//        Customer customer = TestUtils.getCustomerByIdMock(id);
-//
-//        mockMvc.perform(get("/api/customers/" + id))
-//                .andExpect(status().isOk())
-//                .andExpect(content().string(containsString(customer.getFirstName())))
-//                .andExpect(content().string(containsString(customer.getId())))
-//                .andExpect(content().string(containsString(customer.getLastName())))
-//                .andExpect(content().string(containsString(customer.getAddress())))
-//                .andExpect(content().string(containsString(customer.getPhoneNumber())));
-//    }
-//
+
+    @Test
+    public void getCustomerById() throws Exception {
+        Customer c = customerRepository.save(TestUtils.initializeCustomersData().get(0));
+
+        mockMvc.perform(get("/api/customers/" + c.getId()))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString(c.getFirstName())))
+                .andExpect(content().string(containsString(String.valueOf(c.getId()))))
+                .andExpect(content().string(containsString(c.getLastName())))
+                .andExpect(content().string(containsString(c.getAddress())))
+                .andExpect(content().string(containsString(c.getPhoneNumber())));
+    }
+
 //    @Test
 //    public void deleteCustomerById() throws Exception {
 //        String id = "41acbb7a-ebc8-40b7-8281-70635e3466b8";
